@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestCrafters</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Apple System Font -->
+    <style>
+        /* Apply Apple's system font */
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #121212; /* Keep the black background */
+            color: #e0e0e0; /* Light gray text for better readability on dark background */
+            line-height: 1.5;
+        }
+
+        .exam-container {
+            min-height: 100vh;
+            padding-bottom: 80px;
+            position: relative;
+        }
+
+        .header {
+            background-color: #1c1c1e; /* Darker header to blend with the dark theme */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f0f3f5; /* Light blue for contrast */
+        }
+
+        .logo a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .user-actions button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+            color: #e0e0e0; /* Light color for buttons */
+        }
+
+        .user-actions button:hover {
+            background-color: #333333; /* Slightly darker gray on hover */
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #ff3b30; /* Red notification badge */
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem;
+            border-radius: 50%;
+            min-width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            padding-bottom: 80px;
+        }
+
+        .exam-title {
+            background: linear-gradient(135deg, #00aaff 0%, #00aaff 100%); /* Blue gradient */
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .exam-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .exam-title span {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #00aaff 0%, #00aaff 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: block;
+            margin: 2rem auto;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1c1c1e; /* Dark theme for status bar */
+            padding: 1rem;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 1rem;
+        }
+
+        .status-pill {
+            background: linear-gradient(135deg, #00aaff 0%, #00aaff 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card {
+            background-color: #1c1c1e; /* Dark result card */
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card h2 {
+            color: #00aaff; /* Light blue for result heading */
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo"><a href="https://testcrafters.netlify.app/" style="text-decoration: none; color: inherit;">TestCrafters</a></div>
+
+                <div class="user-actions">
+                    <button>
+                        <i class="far fa-bell"></i>
+                        <span class="notification-badge">0</span>
+                    </button>
+                    <button>
+                        <i class="far fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="exam-title">
+                <h1><center>Revision Phase-4</center></h1>
+                <span><center>LIVE_EXAM</center></span>
+            </div>
+
+            <div id="questions-container"></div>
+
+            <button id="submit-btn" class="submit-button">
+                <i class="fas fa-paper-plane"></i>
+                Submit Exam
+            </button>
+        </main>
+
+        <div class="status-bar">
+            <div class="status-content">
+                <div class="status-pill">
+                    <i class="fas fa-check-circle"></i>
+                    Attempted: <span id="attempted-count">0</span>
+                </div>
+                <div class="status-pill">
+                    <i class="fas fa-clock"></i>
+                    Time Left: <span id="time-left">60:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
