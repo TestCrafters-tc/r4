@@ -39,8 +39,11 @@ body {
 .logo {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #fdfefe; /* Green logo */
-}
+    background-image: linear-gradient(to right, #A0522D, #FFD700, #FFFFFF); /* Brownish to Yellow to White gradient */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Make the text transparent to show the gradient */
+  }
 
 .user-actions {
     display: flex;
@@ -150,6 +153,19 @@ body {
     color: #e5e7eb;
 }
 
+/* Ensure MathJax equations are properly styled */
+.MathJax {
+    color: #e5e7eb; /* Match the text color */
+    font-size: 1.125rem; /* Match the font size of the question text */
+    line-height: 1.5; /* Ensure proper line spacing */
+}
+
+/* Prevent equations from overflowing */
+.MathJax_Display {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
 .question-image {
     max-width: 100%;
     border-radius: 0.75rem;
@@ -194,6 +210,12 @@ body {
     color: #065f46;
 }
 
+/* Ensure MathJax equations in options are properly styled */
+.option .MathJax {
+    font-size: 1rem;
+    color: inherit;
+}
+
 .submit-button {
     background: linear-gradient(135deg, #10b981 0%, #047857 100%);
     color: white;
@@ -212,6 +234,11 @@ body {
 .submit-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
+}
+
+#generate-exam-btn {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .status-bar {
@@ -340,7 +367,7 @@ body {
 }
 
 .leaderboard-entry.you {
-    background-color: #dbd2b6;
+    background-color: #10b981;
     color: #065f46;
     font-weight: 600;
 }
@@ -364,4 +391,24 @@ body {
 
 .leaderboard-entry {
     animation: slideIn 0.5s ease-out;
+}
+
+/* Additional styles for MathJax equations */
+.MathJax {
+    color: #e5e7eb; /* Ensure equations match the text color */
+}
+
+/* Hide explanation during the exam */
+.question-explanation {
+    display: none;
+}
+
+/* Show explanation after submission */
+.result-card .question-explanation {
+    display: block;
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #2d3748;
+    border-radius: 0.75rem;
+    border: 1px solid #374151;
 }
