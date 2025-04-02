@@ -698,11 +698,11 @@
         question: "Which gas is mixed with neon gas in a neon lamp?",
         options: [
             "Helium",
-            "Cathode ray",
-            "Gamma ray",
+            "Argon",
+            "Xenon",
             "Nitrogen"
         ],
-        correctAnswer: 0,
+        correctAnswer: 1,
         explanation: "Helium gas is mixed with neon gas in a neon lamp.",
         subject: "Physics"
     },
@@ -2048,7 +2048,7 @@
             "-3",
             "3"
         ],
-        correctAnswer: 3,
+        correctAnswer: 0,
         explanation: "The slope of the tangent at any point is given by the derivative of the curve. For the equation \\( y = 2x^{2} + 3x + 5 \\), the derivative is \\( \\frac{dy}{dx} = 4x + 3 \\). At the point \\( (0,1) \\), the slope of the tangent is \\( 3 \\), and the slope of the normal is the negative reciprocal, which is \\( -\\frac{1}{3} \\). Hence, the correct answer is \\( -3 \\).",
         subject: "Math"
     },
@@ -2951,7 +2951,7 @@
         "0",
         "Undefined"
     ],
-    correctAnswer: 0,
+    correctAnswer: 2,
     explanation: "By substituting \\( x = 1 \\), the value of the limit simplifies to \\( \\frac{-1}{3} \\).",
     subject: "Math"
 },
@@ -3958,10 +3958,10 @@
     {
         question: "A projectile is thrown with a velocity u at an angle of 90° with the ground. What will be the maximum height?",
         options: [
-            "u² / 2g",
-            "u² / g",
-            "u² / 4g",
-            "2u² / g"
+            "\(u² / 2g\)",
+            "\(u² / g\)",
+            "\(u² / 4g\)",
+            "\(2u² / g\)"
         ],
         correctAnswer: 0,
         explanation: "For a projectile thrown vertically upwards with a velocity u, the maximum height reached is given by the formula: H = u² / 2g, where u is the initial velocity and g is the acceleration due to gravity.",
@@ -14837,90 +14837,84 @@
         };
 
         function startExam() {
-    if (examGenerated) return; // Prevent starting multiple exams
+        if (examGenerated) return; // Prevent starting multiple exams
 
-    const questionsContainer = document.getElementById('questions-container');
-    questionsContainer.innerHTML = ''; // Clear previous questions
+        const questionsContainer = document.getElementById('questions-container');
+        questionsContainer.innerHTML = ''; // Clear previous questions
 
-    // Randomly select questions based on the hardcoded distribution
-    let selectedQuestions = [];
-    let usedQuestionIndices = new Set(); // Track used questions to avoid duplicates
+        // Randomly select questions based on the hardcoded distribution
+        let selectedQuestions = [];
+        let usedQuestionIndices = new Set(); // Track used questions to avoid duplicates
 
-    for (const [subject, count] of Object.entries(questionDistribution)) {
-        if (count === 0) continue; // Skip subjects with 0 questions
+        // Define the order of subjects
+        const subjectOrder = ["Physics", "Chemistry", "Biology", "Math", "English"];
 
-        const subjectQuestions = questionPool.filter(q => q.subject === subject);
+        // Get questions for each subject in order
+        for (const subject of subjectOrder) {
+            const count = questionDistribution[subject];
+            if (count === 0) continue; // Skip subjects with 0 questions
 
-        // Shuffle the questions for the subject
-        const shuffledQuestions = subjectQuestions.sort(() => 0.5 - Math.random());
+            const subjectQuestions = questionPool.filter(q => q.subject === subject);
 
-        // Select the first `count` questions that haven't been used yet
-        let selectedCount = 0;
-        for (const question of shuffledQuestions) {
-            if (!usedQuestionIndices.has(questionPool.indexOf(question))) {
-                selectedQuestions.push(question);
-                usedQuestionIndices.add(questionPool.indexOf(question));
-                selectedCount++;
+            // Shuffle the questions for the subject
+            const shuffledQuestions = subjectQuestions.sort(() => 0.5 - Math.random());
+
+            // Select the first `count` questions that haven't been used yet
+            let selectedCount = 0;
+            for (const question of shuffledQuestions) {
+                if (!usedQuestionIndices.has(questionPool.indexOf(question))) {
+                    selectedQuestions.push(question);
+                    usedQuestionIndices.add(questionPool.indexOf(question));
+                    selectedCount++;
+                }
+                if (selectedCount >= count) break;
             }
-            if (selectedCount >= count) break; // Stop after selecting the required number of questions
         }
+
+        // Display all selected questions (already in subject order)
+        selectedQuestions.forEach((question, index) => {
+            const questionCard = document.createElement('div');
+            questionCard.classList.add('question-card');
+            questionCard.dataset.correct = question.correctAnswer;
+            questionCard.dataset.explanation = question.explanation;
+
+            // HTML for question
+            let questionHTML = `
+                <div class="question-header">
+                    <span class="question-number">Question ${index + 1}</span>
+                    <span class="points-badge">1 point</span>
+                </div>
+                <div class="question-text">${question.question}</div>
+            `;
+
+            // Include the image if it exists
+            if (question.image) {
+                questionHTML += `<div class="question-image"><img src="${question.image}" alt="Question Image"></div>`;
+            }
+
+            // Add options
+            questionHTML += `
+                <div class="options">
+                    ${question.options.map((option, optIndex) => `
+                        <div class="option" data-question="${index + 1}" data-option="${optIndex}" onclick="selectOption(${index + 1}, ${optIndex})">
+                            <span class="option-letter">${String.fromCharCode(65 + optIndex)}</span>
+                            <span class="option-text">${option}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            questionCard.innerHTML = questionHTML;
+            questionsContainer.appendChild(questionCard);
+        });
+
+        // Show the exam container
+        document.getElementById('generated-exam-container').style.display = 'block';
+        document.getElementById('start-exam-btn').style.display = 'none';
+        startTimer();
+        examGenerated = true;
+        MathJax.typeset();
     }
-
-    // Shuffle all selected questions to mix subjects
-    selectedQuestions = selectedQuestions.sort(() => 0.5 - Math.random());
-
-    // Display the selected questions
-    selectedQuestions.forEach((question, index) => {
-        const questionCard = document.createElement('div');
-        questionCard.classList.add('question-card');
-        questionCard.dataset.correct = question.correctAnswer;
-        questionCard.dataset.explanation = question.explanation; // Add explanation to dataset
-
-        // HTML for question
-        let questionHTML = `
-            <div class="question-header">
-                <span class="question-number">Question ${index + 1}</span>
-                <span class="points-badge">1 point</span>
-            </div>
-            <div class="question-text">${question.question}</div>
-        `;
-
-        // Include the image if it exists
-        if (question.image) {
-            questionHTML += `<div class="question-image"><img src="${question.image}" alt="Question Image"></div>`;
-        }
-
-        // Add options
-        questionHTML += `
-            <div class="options">
-                ${question.options.map((option, optIndex) => `
-                    <div class="option" data-question="${index + 1}" data-option="${optIndex}" onclick="selectOption(${index + 1}, ${optIndex})">
-                        <span class="option-letter">${String.fromCharCode(65 + optIndex)}</span>
-                        <span class="option-text">${option}</span>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-
-        questionCard.innerHTML = questionHTML;
-        questionsContainer.appendChild(questionCard);
-    });
-
-    // Show the exam container
-    document.getElementById('generated-exam-container').style.display = 'block';
-
-    // Hide the "Start Exam" button
-    document.getElementById('start-exam-btn').style.display = 'none';
-
-    // Start the timer
-    startTimer();
-
-    // Mark exam as generated
-    examGenerated = true;
-
-    // Render MathJax equations
-    MathJax.typeset();
-}
 
         function startTimer() {
             timer = setInterval(() => {
